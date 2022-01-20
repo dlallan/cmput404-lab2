@@ -10,15 +10,13 @@ In Python, the sockets of a client and a server are initialized the same way, an
 * After a server accepts a connection, the two parties can communicate with each other over separate streams using `recv()` and `send()` (other variants are also available in the `socket` module).
 
 ## Question 3: How do we instruct the OS to let us reuse the same bind port?
-The method `socket.bind((HOST, PORT))` will ensure that the socket will be bound to `PORT` each time the program is run.
-**TODO: socket.setsockopt(level, optname, value: int) ????**
+To allow a port to be bound to multiple sockets, the option SO_REUSEADDR or SO_REUSEPORT must be enabled. This can be done with `socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)` or `socket.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)`, respectively.
 
 ## Question 4: What information do we get about incoming connections?
-Once an incoming connection is `accept`ed, the server receives the address and port of the client as the tuple `(address, port)`.
+Once an incoming connection is `accept`ed, the server receives the IP address and port of the client as the tuple `(address, port)`.
 
 ## Question 5: What is returned by `recv()` from the server after it is done sending the HTTP request?
-The response from the server is an HTTP response. If the request was successful, the response should start with a response line like `HTTP/1.1 200 OK` followed by the response header and possibly an entity the content requested by the client.
-**TODO: What scenario is this server handling HTTP requests for?**
+The final `recv()` contains the empty byte `b''`.
 
 ## Question 6: Provide a link to your code on GitHub.
-
+https://github.com/dlallan/cmput404-lab2
