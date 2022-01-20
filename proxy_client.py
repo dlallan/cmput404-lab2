@@ -5,16 +5,19 @@ import socket
 def main():
     server_addr = ('localhost', 8001)
     with socket.create_connection(server_addr) as conn:
-        conn.send(b'GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n')
+        conn.sendall(b'GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n')
+        conn.shutdown(socket.SHUT_WR)
+        
         proxy_data = b''
         while True:
             data = conn.recv(4096)
-            proxy_data = b''.join((proxy_data, data))
-            if data[-4:] == b'\r\n\r\n':
+            if data:
+                proxy_data = b''.join((proxy_data, data))
+            else:
                 break
 
         if proxy_data:
-            print(proxy_data)
+            print('Data received from proxy:\n', proxy_data)
 
 
 if __name__ == '__main__':
