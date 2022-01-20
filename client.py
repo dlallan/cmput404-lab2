@@ -4,6 +4,7 @@ import socket
 def main():
     response_data = b''
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+        client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         client_socket.connect(('www.google.com', 80))
         client_socket.sendall(
             b'''GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n''')
